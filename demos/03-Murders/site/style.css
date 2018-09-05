@@ -1,0 +1,49 @@
+html {
+	box-sizing: border-box;
+}
+
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+.hidden {
+	display: none;
+}
+
+body {
+	font-family: helvetica;
+	margin:  0;
+}
+
+#murders {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.murder {
+	
+	padding: 10px;
+	flex: 0 0 25%;
+	height: 320px;
+}
+
+.murder .inner {
+	height: 100%;
+	padding: 10px;
+	border: 1px solid #000;	
+}
+
+.victim {
+	font-size: 26px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	
+}
+
+.age {
+	font-size: 100px;
+}
+
+.date {
+	color: red;
+}
