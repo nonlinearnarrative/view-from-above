@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		
+
+		fetch('brazil-states.geojson', {
+			method: 'get'
+		}).then((response) => {
+			return response.json();
+		}).then(function(data) {
+			console.log(data.features);
+			data.features.forEach(function(feature){
+
+				feature.id = feature.properties.id;
+				console.log(feature);
+
+			});
+			console.log(JSON.stringify(data));
+		});
+	</script>
+</body>
+</html>

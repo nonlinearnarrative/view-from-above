@@ -2,6 +2,7 @@ html {
 	box-sizing: border-box;
 }
 
+
 *, *::before, *::after {
 	box-sizing: inherit;
 }
@@ -11,39 +12,165 @@ html {
 }
 
 body {
-	font-family: helvetica;
-	margin:  0;
+	font-family: 'Roboto Mono', monospace;
+	display: flex;
+	margin: 0;
+	min-height: 100vh;
+	background-color: #383838;
+	color: #FFF;
+
+}
+
+#year-menu {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 0 1 80px;
+	padding: 10px;
+	justify-content: space-between;
+	background-color: #222;
+}
+
+#year-menu div {
+	cursor: pointer;
+
+}
+
+#year-menu div.active {
+	color: red;
+
+}
+
+#visualisation {
+	padding-left: 10px;
+	flex: 0 1 calc(100% - 80px);
 }
 
 #murders {
+
+}
+
+h1 {
+	flex: 1 0 100%;
+}
+
+.year-container {
 	display: flex;
-	flex-wrap: wrap;
+	flex-flow: row wrap;
+}
+
+.year-container .month-legend {
+	width: 30px;
+	padding-top: 50px;
+
+	font-size: 12px;
+	text-transform: uppercase;
+	
+}
+
+.unknown .murder {
+	background-color: red;
+}
+
+.NE .murder {
+	background-color: rgb(255,0,0);
+}
+
+.N .murder {
+	background-color: tan;
+}
+
+.CW .murder {
+	background-color: green;
+}
+
+.S .murder {
+	background-color: orange;
+}
+
+.SE .murder {
+	background-color: blue;
+}
+
+.month-legend div {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+}
+
+.state-columns {
+	padding-top: 50px;
+
+	display: flex;
+	flex: 1 1 calc(100% - 30px);
+}
+
+.year-container .state-columns > div {
+	flex: 0 1 30px;
+	border-right: 1px solid #ddd;
+
+}
+
+#svgContainer {
+	
+
+}
+
+path.active, polygon.active {
+	fill: red;
+}
+
+#info {
+	display: flex;
+	padding-top: 20px;
+}
+
+#info > div {
+	flex: 0 1 33.3%;
+	
+}
+#svgContainer svg {
+	width: 300px;
+}
+
+.state-column {
+/*	display: flex;
+	flex-flow: column nowrap;*/
+	position: relative;
+}
+
+.state-column.off {
+	opacity: 0.1;
+}
+
+.event-container {
+	display: flex;
+
+}
+.month {
+	min-height: 30px;
+	display: flex;
+}
+
+.header {
+	position: absolute;
+	font-size: 12px;
+	transform: rotate(-45deg);
+	font-weight: bold;
+	transform-origin: 0 0;
+	min-width: 150px;
+	top: -15px;
 }
 
 .murder {
+	flex: 0 0 30px;
+	width: 30px;
+	height: 30px;
+	background-color: cyan;
 	
-	padding: 10px;
-	flex: 0 0 25%;
-	height: 320px;
+	border-left: none;
 }
 
-.murder .inner {
-	height: 100%;
-	padding: 10px;
-	border: 1px solid #000;	
-}
 
-.victim {
-	font-size: 26px;
-	font-weight: bold;
-	margin-bottom: 10px;
-	
-}
 
-.age {
-	font-size: 100px;
-}
 
-.date {
-	color: red;
-}
+

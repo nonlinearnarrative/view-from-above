@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
-	const data = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+	const data = JSON.parse(fs.readFileSync('murders.json', 'utf8'));
 	res.json({ murders: data });
 });
 
