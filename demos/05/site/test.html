@@ -2,24 +2,35 @@
 <html>
 <head>
 	<title></title>
+
 </head>
 <body>
 	<script type="text/javascript">
 		
 
-		fetch('brazil-states.geojson', {
+		fetch('water.json', {
 			method: 'get'
 		}).then((response) => {
 			return response.json();
 		}).then(function(data) {
-			console.log(data.features);
-			data.features.forEach(function(feature){
-
-				feature.id = feature.properties.id;
-				console.log(feature);
+			let geofeature = {
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": []
+				},
+				"properties": {}
+			};
+			let features = [];
+			data.forEach(function(feature){
+				console.log(feature.lat);
+				geofeature.properties = feature;
+				geofeature.geometry.coordinates = [feature.lng, feature.lat];
+				features.push(geofeature);
 
 			});
-			console.log(JSON.stringify(data));
+			//console.log(features);
+			console.log(JSON.stringify(features));
 		});
 	</script>
 </body>

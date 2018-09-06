@@ -33,6 +33,7 @@ app.get('/data', (req, res) => {
 	
 	fs.readdirSync(screenshots).forEach(folder => {
 		files.push(file);
+		
 
 	})
 	res.json({ screenshots: files });

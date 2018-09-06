@@ -1,15 +1,49 @@
-let murders;
+let occupations;
+let currentState;
+let waterFeatures;
 fetch('http://localhost:3000/', {
 	method: 'get'
 }).then((response) => {
 	return response.json();
 }).then(function(data) {
 	console.log(data);
+	occupations = data.states;
+
+	let organisations = [];
 
 
+	// for(let state in data.states){
+		
+	// 	data.states[state].occupations.forEach(function(occ){
+	// 		let organisation = occ.organization;
+
+	// 		console.log(organisation);
+	// 	});
+	// }
 });
 
-document.addEventListener('DOMContentLoaded', function(){
+fetch('http://localhost:3000/water', {
+	method: 'get'
+}).then((response) => {
+	return response.json();
+}).then(function(data) {
+	waterFeatures = data;
+	doMap();
+
+
+	// for(let state in data.states){
+		
+	// 	data.states[state].occupations.forEach(function(occ){
+	// 		let organisation = occ.organization;
+
+	// 		console.log(organisation);
+	// 	});
+	// }
+});
+
+
+
+function doMap(){
 
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYW5lY2RvdGUxMDEiLCJhIjoiY2oxMGhjbmpsMDAyZzJ3a2V0ZTBsNThoMiJ9.1Ce55CnAaojzkqgfX70fAw';
 
@@ -20,8 +54,29 @@ document.addEventListener('DOMContentLoaded', function(){
 	    zoom: 3.8
 	});
 	var hoveredStateId =  null;
-
+	console.log('water', waterFeatures.states);
 	map.on('load', function () {
+
+		
+
+	    map.addLayer({
+	        "id": "points",
+	        "type": "symbol",
+	        "source": {
+	            "type": "geojson",
+	            "data": {
+	                "type": "FeatureCollection",
+	                "features": waterFeatures.states
+	            }
+	        },
+	        "layout": {
+	            "icon-image": "{icon}-15",
+	            "text-field": "{title}",
+	            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+	            "text-offset": [0, 0.6],
+	            "text-anchor": "top"
+	        }
+	    });
 
 	    map.addSource("states", {
 	        "type": "geojson",
@@ -62,17 +117,23 @@ document.addEventListener('DOMContentLoaded', function(){
 	    // When the user moves their mouse over the state-fill layer, we'll update the
 	    // feature state for the feature under the mouse.
 
-	    map.on("mousemove", "state-fills", function(e) {	        
+	    map.on("mousemove", "state-fills", function(e) {	 
 	        if (e.features.length > 0) {
 	            if (hoveredStateId) {
 	                map.setFeatureState({source: 'states', id: hoveredStateId}, { hover: false});
 	            }
 	            
-	            document.querySelector('#info').innerText = e.features[0].properties.name;
+	            //document.querySelector('#info').innerText = e.features[0].properties.name;
 	            hoveredStateId = e.features[0].properties.id;
 	            
-	            console.log(e.features[0].properties);
-
+	            
+	            let stateName = e.features[0].properties.name;
+	            //console.log(stateName);
+	            if(stateName !== currentState){
+	        		let stateData = _.findWhere(occupations, {state: stateName});
+	            	currentState = stateName;
+	            	showData(stateData, e.point);
+	            }
 	            map.setFeatureState({source: 'states', id: hoveredStateId}, { hover: true});
 	        }
 	    });
@@ -84,4 +145,22 @@ document.addEventListener('DOMContentLoaded', function(){
 	        hoveredStateId =  null;
 	    });
 	});
-});
+}
+
+function showData(stateData, point){
+
+	let occupations = stateData.occupations;
+
+	document.querySelector('#info').innerHTML = '';
+	document.querySelector('#info').style.top = point.y + 'px';
+	document.querySelector('#info').style.left = point.x + 'px';
+	occupations.forEach(function(occupation){
+		console.log(occupation);
+		let propertName = occupation.occupied_property_name;
+		let propertyNameEl = document.createElement('div');
+		propertyNameEl.innerText = propertName;
+		document.querySelector('#info').appendChild(propertyNameEl);
+	});
+
+}
+
