@@ -52,10 +52,13 @@ rows2.forEach((row) => {
 
 	console.log(row);
 	const municipality = row[1];
-	const slug = slugify(municipality).toLowerCase();
+	const state = row[0];
+
+	const slug = slugify(state).toLowerCase();
+
 	if (data[slug] == undefined) {
 		data[slug] = {
-			municipality: municipality,
+			state: state,
 			occupations: [],
 		}
 	} 
