@@ -18,16 +18,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	    style: 'mapbox://styles/anecdote101/cjlqeg5fa90892rqnyydsovih',
 	    center: [-47.728, -14.455],
 	    zoom: 3.8
-
-
-
 	});
 	var hoveredStateId =  null;
 
 	map.on('load', function () {
-
-
-
 
 	    map.addSource("states", {
 	        "type": "geojson",
@@ -68,8 +62,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	    // When the user moves their mouse over the state-fill layer, we'll update the
 	    // feature state for the feature under the mouse.
 
-	    map.on("mousemove", "state-fills", function(e) {
-	        
+	    map.on("mousemove", "state-fills", function(e) {	        
 	        if (e.features.length > 0) {
 	            if (hoveredStateId) {
 	                map.setFeatureState({source: 'states', id: hoveredStateId}, { hover: false});
@@ -77,12 +70,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	            
 	            document.querySelector('#info').innerText = e.features[0].properties.name;
 	            hoveredStateId = e.features[0].properties.id;
+	            
+	            console.log(e.features[0].properties);
+
 	            map.setFeatureState({source: 'states', id: hoveredStateId}, { hover: true});
 	        }
 	    });
 
-	    // When the mouse leaves the state-fill layer, update the feature state of the
-	    // previously hovered feature.
 	    map.on("mouseleave", "state-fills", function() {
 	        if (hoveredStateId) {
 	            map.setFeatureState({source: 'states', id: hoveredStateId}, { hover: false});
