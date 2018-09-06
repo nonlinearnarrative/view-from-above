@@ -49,6 +49,8 @@ rows1.forEach((row, num) => {
 
 const data = {};
 rows2.forEach((row) => {
+
+	console.log(row);
 	const municipality = row[1];
 	const slug = slugify(municipality).toLowerCase();
 	if (data[slug] == undefined) {
@@ -57,7 +59,15 @@ rows2.forEach((row) => {
 			occupations: [],
 		}
 	} 
-	data[slug].occupations.push(row);
+	data[slug].occupations.push({
+		state: row[0],
+		municipality: row[1],
+		occupied_property_name: row[2],
+		date: row[3],
+		area: row[4],
+		families: row[5],
+		organization: row[6],
+	});
 });
 
 
