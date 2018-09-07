@@ -1,5 +1,43 @@
+html {
+	box-sizing: border-box;
+}
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+
+html, body {
+	height: 100%;
+}
+
 body {
 	font-family: helvetica;
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+}
+main {
+	width: 100%;
+	height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+}
+
+a:link, a:visited, a:active, a:hover {
+	color: #0000FF;
+}
+
+ul, li {
+	list-style: none;
+	margin:  0;
+	padding: 0;
+}
+
+li {
+	margin-bottom: 5px;
 }
 
 .hidden {
@@ -9,10 +47,83 @@ body {
 .list {
 }
 
-main#selection {
+.columns {
 	display: flex;
+	width: 100%;
+	height: 100%;
 }
 
-main#selection.hidden {
-	display: none;
+.column {
+	padding: 20px;
+	height:  100%;
+	overflow: auto;
+	border-right: 1px solid #000;
+}
+
+.row {
+	margin-bottom: 20px;
+}
+
+main#selection .columns {
+
+}
+
+main#selection .columns .column{
+	flex: 0 0 20%;
+}
+
+main#results .columns .column:nth-child(1) {
+	flex: 0 0 25%;
+}
+
+main#results .columns .column:nth-child(2) {
+	flex: 0 0 75%;
+}
+
+main#selection ul {
+	margin-top: 20px;
+}
+
+
+main#selection form ul li {
+	margin-bottom: 15px;
+}
+
+
+
+input, select {
+	display: block;
+	margin: 2px 0;
+	font-size: 16px;
+	width: 100%;
+}
+
+button {
+	margin-top: 10px;
+	font-size: 16px;
+}
+
+
+
+
+
+
+
+
+.column.blockade {
+	background-size: cover;
+	background-position: center center;
+}
+
+#blockade-info {
+	border: 1px solid #000;
+	background-color: #FFF;
+	margin:  20px;
+	padding: 20px;
+	float:  left;
+	max-width: 500px;
+}
+
+.column.blockade h1 {
+
 }

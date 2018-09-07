@@ -7,68 +7,103 @@
 <body>
 
 	<main id="selection">
-		<section id="states" class="list">
-			<h1>Select state</h1>
-			<ul></ul>
-		</section>
+		<div class="columns">
+			<section id="about" class="column">
+				<h1>Blockades in Brazil</h1>
+				<p>Between 2004 and 2017, there have been 1,689 recorded Blockades.</p>
+				<p>The most recent blockade in 2018 to protest the hike in diesel prices involved 300,000 truckers. It lasted 11 days and resulted The ANTT (Agência Nacional de Transporte Terrestre) publishing a new minimum price table.</p>
+				<p>Although these blockades can bring much needed change and attention to a wide range of issues, Brazil relies on roads for 90% of all its freight, meaning an extended blockade on a highway can cause huge economic damage. The government estimates for the blockade in 2018 that R$75bn damage was caused across multiple industries.</p>
 
-		<section id="municipalities" class="list">
-			<h1>Select municipality</h1>
-			<ul></ul>
-		</section>
+			</section>
 
-		<section id="groups" class="list">
-			<h1>Select type of claim</h1>
-			<ul></ul>
-		</section>
+			<section id="states" class="column">
+				<h1>State</h1>
+				<ul></ul>
+			</section>
 
-		<section id="participants" class="list">
-			<h1>Participation</h1>
-			<form>
-				<div>
-					<label for="num-participants">Number of participants</label>
-					<input type="text" id="num-participants" />
-				</div>
+			<section id="municipalities" class="column">
+				<h1>Municipality</h1>
+				<ul></ul>
+			</section>
 
-				<div>
-					<label for="num-months">Number of months</label>
-					<input type="text" id="num-months" />
-				</div>
+			<section id="groups" class="column">
+				<h1>Grievance</h1>
+				<ul></ul>
+			</section>
 
-				<button id="submit">Submit</button>
+			<section id="participants" class="column">
+				<h1>Particpation</h1>
+				<form>
+					<ul>
+						<li>
+							<label for="num-participants">Number of participants</label>
+							<div><input type="text" id="num-participants" value="100" /></div>
+						</li>
 
-			</form>
-		</section>
+						<li>
+							<label for="num-days">Number of days</label>
+							<div><input type="text" id="num-days" value="30" /></div>
+						</li>
+
+						<li>
+							<label for="material">Using</label>
+							<div>
+								<select id="material">
+									<option value="trucks">Trucks</option>
+									<option value="tires">Tires</option>
+									<option value="people">People</option>
+									<option value="barriers">Barriers</option>
+								</select>
+							</div>
+						</li>
+						<li>
+							<button id="submit">Submit</button>
+						</li>
+					</ul>
+				</form>
+			</section>
+		</div>
 	</main>
 
 	<main id="results">
-		<a href="/" id="back">Back</a>
-		<h1>Results</h1>
+		<div class="columns">
+			<div class="column">
+				<div class="row">
+					<li><a href="/" id="back">Back</a></li>
+					<h1>Result</h1>
+					<ul>
+						<li>
+							A blockade in <strong><span id="result-state" class="result"></span></strong>, <strong><span id="result-municipality"></span></strong>, 
+							in reponse to a grievance of <strong><span id="result-group"></span></strong>
+							involving <strong><span id="result-participants"></span></strong> people
+							for <strong><span id="result-days"></span></strong>
+							using <strong><span id="result-material"></span></strong>
+							will cost the govenrment and local industry <strong>R$<span id="result-damage"></span></strong>.
+						</li>
+					</ul>
+				</div>
 
-		<div>
-			State: <span id="result-state"></span>
+				<div class="row">
+					<div id="industries">
+						<h1>Industries</h1>
+						<div id="result-industries"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<h1>Blockades</h1>
+					<div id="result-blockades"></div>
+				</div>
+			</div>
+			<div class="column blockade">
+				<div id="blockade-info">
+					<h1><span id="blockade-road"></span></h1>
+					<div><span id="blockade-grievance"></span></div>
+					<div><span id="blockade-people"></span> involved</div>
+					<div><span id="blockade-date"></span></div>
+				</div>
+			</div>
 		</div>
-
-		<div>
-			Industries: <span id="result-industries"></span>
-		</div>
-
-		<div>
-			Municipality: <span id="result-municipality"></span>
-		</div>
-
-		<div>
-			Type of claim: <span id="result-group"></span>
-		</div>
-
-		<div>
-			Participants: <span id="result-participants"></span>
-		</div>
-
-		<div>
-			Months: <span id="result-months"></span>
-		</div>
-
 	</main>
 
 	<script src="scripts.js"></script>
