@@ -12,13 +12,35 @@ html {
 }
 
 body {
+	-webkit-font-smoothing: antialiased;
 	font-family: 'Roboto Mono', monospace;
 	display: flex;
 	margin: 0;
 	min-height: 100vh;
 	background-color: #383838;
 	color: #FFF;
+	font-weight: 500;
+}
 
+.tooltip {
+	border: 1px solid #FFF;
+	padding: 10px;
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	width: 300px;
+	pointer-events: none;
+	font-size: 12px;
+}
+
+.tooltip .info {
+	font-size: 15px;
+	font-weight: 400;
+	margin-top: 10px;
+}
+
+.tooltip .info span {
+	font-weight: 700 !important;
 }
 
 #year-menu {
@@ -26,6 +48,7 @@ body {
 	flex: 0 1 80px;
 	padding: 20px 10px;
 	font-size: 14px;
+
 }
 
 #year-menu .inner {
@@ -41,11 +64,12 @@ body {
 	cursor: pointer;
 	text-align: center;
 	padding: 5px 0;
+	color: #777;
 
 }
 
 #year-menu div.active {
-	color: red;
+	color: #FFF;
 
 }
 
@@ -55,7 +79,7 @@ body {
 }
 
 #murders {
-
+	position: relative;
 }
 
 h1 {
@@ -71,6 +95,7 @@ h1 {
 	width: 30px;
 	padding-top: 50px;
 	color: #777;
+	display: none;
 	font-size: 14px;
 	text-transform: uppercase;
 	
@@ -90,12 +115,20 @@ div[data-region='NE'] .header {
 	color: #FFBC00;
 }
 
+.graph .NE {
+	background-color: #FFBC00;	
+}
+
 .N .murder {
 	background-color: #63823B;
 }
 
 div[data-region='N'] .header {
 	color: #63823B;
+}
+
+.graph .N {
+	background-color: #63823B;	
 }
 
 .CW .murder {
@@ -106,12 +139,21 @@ div[data-region='CW'] .header {
 	color: #7F7A75;
 }
 
+.graph .CW {
+	background-color: #7F7A75;	
+}
+
+
 .S .murder {
 	background-color: #997510;
 }
 
 div[data-region='S'] .header {
 	color: #997510;
+}
+
+.graph .S {
+	background-color: #997510;	
 }
 
 .SE .murder {
@@ -121,6 +163,10 @@ div[data-region='S'] .header {
 
 div[data-region='SE'] .header {
 	color: #34489B;
+}
+
+.graph .SE {
+	background-color: #34489B;	
 }
 
 .month-legend div {
@@ -151,17 +197,50 @@ path.active, polygon.active {
 	fill: red;
 }
 
+
+#info #text-data {
+	flex: 0 1 calc(100% - 300px);
+	display: flex;
+	flex-flow: row wrap;
+}
+
+#text-data .graph {
+	flex: 1 0 100%;
+	height: 40px;
+	display: flex;
+}
+
+#text-data .year {
+	flex: 0 1 20%;
+	min-height: 200px;
+}
+
+#text-data .murders {
+	flex: 0 1 40%;
+	min-height: 200px;
+}
+
+#text-data .murders .title {
+	padding-bottom: 10px;
+}
+
+#text-data .population {
+	flex: 0 1 40%;
+	min-height: 200px;
+	text-align: right;
+}
+
 #info {
 	display: flex;
 	padding-top: 20px;
 }
 
-#info > div {
-	flex: 0 1 33.3%;
-	
+#svgContainer {
+	flex: 0 1 240px;
 }
+
 #svgContainer svg {
-	width: 300px;
+	width: 100%;
 }
 
 svg path, svg polygon {
@@ -180,7 +259,7 @@ svg path, svg polygon {
 
 }
 
-.month div:nth-last-child(1){
+.month .event-container > div:nth-last-child(1){
 	border-right: none;
 }
 
@@ -193,7 +272,7 @@ svg path, svg polygon {
 
 .month {
 	min-height: 30px;
-	display: flex;
+	//display: flex;
 }
 
 .header {
@@ -207,14 +286,20 @@ svg path, svg polygon {
 
 }
 
-.murder {
 
+
+.murder {
+	position: relative;
 	flex: 0 0 30px;
 	width: 30px;
 	height: 30px;
 	background-color: cyan;
-	
 	border-left: none;
+}
+
+.murder.hovered {
+	opacity: 1 !important;
+	z-index: 100;
 }
 
 

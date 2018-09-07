@@ -1,12 +1,17 @@
 
 let murders;
-fetch('http://localhost:3000/', {
+let geoInfo;
+let population;
+
+fetch('all-data.json', {
 	method: 'get'
 }).then((response) => {
 	return response.json();
 }).then(function(data) {
-	console.log(data);
+
 	murders = data.murders;
+	geoInfo = data.geoInfo;
+	population = data.population;
 	appendSVG();
 	let years = {};
 	
@@ -26,6 +31,7 @@ fetch('http://localhost:3000/', {
 			if (!(year in years)){
 				years[year] = {};
 				let yearElement = document.createElement('div');
+				yearElement.classList.add('year-'+year);
 				yearElement.innerText = year;
 				document.querySelector('#year-menu .inner').appendChild(yearElement);
 			}
@@ -33,10 +39,10 @@ fetch('http://localhost:3000/', {
 			if(!(state in years[year])){
 				years[year][state] = {};
 			}
-            
+			
 			if(_.findWhere(states, {stateName: state}) === undefined && state.length !== 2){
-                let fullState = _.findWhere(geoInfo, {stateName: state });
-               
+				let fullState = _.findWhere(geoInfo, {stateName: state });
+			   
 				states.push(fullState);
 			}
 
@@ -58,19 +64,20 @@ fetch('http://localhost:3000/', {
 	
 	});
 
-	plotGraph(years[1997], 1997);
+	plotGraph(years[2016], 2016);
 
 	let colors = {};
 	
-	document.querySelectorAll('#year-menu div').forEach(function(el){
+	document.querySelectorAll('#year-menu .inner div').forEach(function(el){
 		el.addEventListener('click', function(e){
 			let year = el.innerText;
-			plotGraph(years[year], year);
 			if(document.querySelector('#year-menu div.active') !== null){
 				document.querySelector('#year-menu div.active').classList.remove('active');
 			}
+			plotGraph(years[year], year);
 			
-			el.classList.add('active');			
+			
+					
 		});
 	});
 
@@ -116,8 +123,10 @@ function appendSVG(){
 
 let filterState;
 
-function plotGraph(year, yearName){
+let maxMurdersInEvent = 0;
 
+function plotGraph(year, yearName){
+	document.querySelector('#year-menu .inner div.year-'+yearName).classList.add('active');
 	document.querySelector('#visualisation #murders').innerHTML = '';
 	let yearContainter = document.createElement('div');
 
@@ -137,50 +146,58 @@ function plotGraph(year, yearName){
 
 	yearContainter.classList.add('year-container', 'year-'+yearName);
 	
-    geoInfo.forEach(function(state, i){
+	
 
-        let stateElement = document.createElement('div');
-        stateElement.setAttribute('data-state', state.stateName);
-        stateElement.setAttribute('data-region', state.region);
-        stateColumns.appendChild(stateElement);
-        stateElement.classList.add('state-column');
-        let header = document.createElement('div');
-        header.classList.add('header');
-        header.innerHTML = state.abbr;
-        stateElement.appendChild(header);
+	geoInfo.forEach(function(state, i){
 
-    });
+		let stateElement = document.createElement('div');
+		stateElement.setAttribute('data-state', state.stateName);
+		stateElement.setAttribute('data-region', state.region);
+		stateColumns.appendChild(stateElement);
+		stateElement.classList.add('state-column');
+		let header = document.createElement('div');
+		header.classList.add('header');
+		header.innerHTML = state.abbr;
+		stateElement.appendChild(header);
+
+	});
 
 	// states.forEach(function(state){
  //        console.log(state);
-	// 	let stateElement = document.createElement('div');
-	// 	stateElement.setAttribute('data-state', state.stateName);
-	// 	stateColumns.appendChild(stateElement);
-	// 	stateElement.classList.add('state-column');
-	// 	let header = document.createElement('div');
-	// 	header.classList.add('header');
-	// 	header.innerHTML = state.abbr;
-	// 	stateElement.appendChild(header);
+	//  let stateElement = document.createElement('div');
+	//  stateElement.setAttribute('data-state', state.stateName);
+	//  stateColumns.appendChild(stateElement);
+	//  stateElement.classList.add('state-column');
+	//  let header = document.createElement('div');
+	//  header.classList.add('header');
+	//  header.innerHTML = state.abbr;
+	//  stateElement.appendChild(header);
 	// });
 
-	// let yearHeading = document.createElement('h1');
-	// yearHeading.innerText = yearName;
+	let yearHeading = document.createElement('div');
+	yearHeading.innerText = yearName;
 
+	document.querySelector('#info .year').innerHTML = '';
+	document.querySelector('#info .year').appendChild(yearHeading);
 	yearContainter.appendChild(monthLegend);
 	yearContainter.appendChild(stateColumns);
 	document.querySelector('#murders').appendChild(yearContainter);
+	let numEvents = 0;
+	let numMurders = 0;
+
+	
 
 	for(let state in year){
 		
 		let stateColumn = document.querySelector('.year-container.year-'+yearName+' div[data-state="'+state+'"]');
 
 		//let area = 'unknown';
-        let area = _.findWhere(geoInfo, {stateName: state }).region;
+		let area = _.findWhere(geoInfo, {stateName: state }).region;
 		// for(let i in stateMap){
-		// 	if(stateMap[i].state === state){
-		// 		area = stateMap[i].area;
-		// 		break;
-		// 	}
+		//  if(stateMap[i].state === state){
+		//      area = stateMap[i].area;
+		//      break;
+		//  }
 		// }
 
 		stateColumn.classList.add(area);
@@ -194,10 +211,15 @@ function plotGraph(year, yearName){
 
 		for(let event in year[state]){
 			
+			let numInEvent = year[state][event].length;
+			
+			let opacity = mapRange(numInEvent, 1, 11, 0.4, 1);
+
 
 			let eventContainer = document.createElement('div');
 			eventContainer.setAttribute('data-event', event);
 			stateColumn.appendChild(eventContainer);
+			numEvents++;
 			for(let murder in year[state][event]){
 
 				let murderElement = document.createElement('div');
@@ -206,264 +228,136 @@ function plotGraph(year, yearName){
 				murderElement.classList.add('murder');
 				murderElement.setAttribute('data-ref', year[state][event][murder].ref);
 				murderElement.addEventListener('mouseenter', showMurder);
+				murderElement.addEventListener('mouseleave', hideMurder);
+				murderElement.style.opacity = opacity;
+
+				//murderElement.innerText = month;
 
 				let monthContainer = document.querySelector('.year-container.year-'+yearName+' div[data-state="'+state+'"] .month[data-month="'+month+'"]');
 				eventContainer.appendChild(murderElement);
-                
-                
-                monthContainer.appendChild(eventContainer);
+				
+				numMurders++;
+				monthContainer.appendChild(eventContainer);
 			}
 			eventContainer.classList.add('event-container');
 
 		}
 	}
+	let totalMurders = document.createElement('div');
+	totalMurders.innerText = numMurders + '  Murders | Assassinatos';
+	let totalEvents = document.createElement('div');
+	totalEvents.innerText = numEvents + ' Conflicts | Conflitos';
+
+	document.querySelector('#info .murders .values').innerHTML = '';
+	document.querySelector('#info .murders .values').appendChild(totalMurders);
+	document.querySelector('#info .murders .values').appendChild(totalEvents);
+
+
+	let yearPopulation = population[yearName];
+
+	let populationTotals = {};
+	let b = 0;
+	for(let region in yearPopulation.regions){
+		if(region !== 'Brazil'){
+			if(!(region in populationTotals)){
+				populationTotals[region] = 0;
+			}
+			for(let state in yearPopulation.regions[region]){
+				populationTotals[region] += yearPopulation.regions[region][state];
+				b+= yearPopulation.regions[region][state];
+			}
+		}
+	}
+
+	document.querySelector('#info .graph').innerHTML = '';
+	for(let region in populationTotals){
+		let percentage = ((populationTotals[region]/b) * 100).toFixed(2);
+		let section = document.createElement('div');
+		section.classList.add(region);
+		section.innerText = percentage+'%';
+		section.style.flex = '0 1 '+percentage+'%';
+		document.querySelector('#info .graph').appendChild(section);
+	}
+
+
+	let brazilPopulation = yearPopulation.regions['Brazil'];
+	document.querySelector('#info .population .brazil .value').innerText = numberWithCommas(brazilPopulation['Brazil']);
+
+	console.log(maxMurdersInEvent);
+
+}
+
+const numberWithCommas = (x) => {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // function plotYear(year, yearName){
-// 	console.log(year);
-// 	let yearContainter = document.createElement('div');
-// 	yearContainter.classList.add('year-container', 'year-'+yearName);
+//  console.log(year);
+//  let yearContainter = document.createElement('div');
+//  yearContainter.classList.add('year-container', 'year-'+yearName);
 
-// 	for(let i = 0; i < 365; i++){
-// 		let day = document.createElement('div');
-// 		yearContainter.appendChild(day);
-// 		day.addEventListener('mouseenter', showMurder);
-// 	}
-// 	document.querySelector('#murders').appendChild(yearContainter);
+//  for(let i = 0; i < 365; i++){
+//      let day = document.createElement('div');
+//      yearContainter.appendChild(day);
+//      day.addEventListener('mouseenter', showMurder);
+//  }
+//  document.querySelector('#murders').appendChild(yearContainter);
 	
 	
 
-// 	year.forEach(function(murder){
+//  year.forEach(function(murder){
 
-// 		let day = murder.momentDate.format('DDD');	
-// 		let murderDay = document.querySelector('.year-container.year-'+yearName+' div:nth-child('+day+')');
-// 		murderDay.style.backgroundColor = 'red';
-// 		murderDay.setAttribute('data-murder', murder.ref);
-// 	});
+//      let day = murder.momentDate.format('DDD');  
+//      let murderDay = document.querySelector('.year-container.year-'+yearName+' div:nth-child('+day+')');
+//      murderDay.style.backgroundColor = 'red';
+//      murderDay.setAttribute('data-murder', murder.ref);
+//  });
 // }
 
-function showMurder(){
-	let murder = murders[this.getAttribute('data-ref')];
-	console.log(murder);
-
-
+function hideMurder(e){
+	e.target.classList.remove('hovered');
+	document.querySelectorAll('.tooltip').forEach(function(el){
+		el.parentNode.removeChild(el);
+	});
 }
 
-let geoInfo = [
-  {
-    "1996": 1229306,
-    "2000": 1380952,
-    "2010": 1562409,
-    "abbr": "RO",
-    "stateName": "Rondônia",
-    "region": "N"
-  },
-  {
-    "1996": 483593,
-    "2000": 557882,
-    "2010": 733559,
-    "abbr": "AC",
-    "stateName": "Acre",
-    "region": "N"
-  },
-  {
-    "1996": 2389279,
-    "2000": 2817252,
-    "2010": 3483985,
-    "abbr": "AM",
-    "stateName": "Amazonas",
-    "region": "N"
-  },
-  {
-    "1996": 247131,
-    "2000": 324397,
-    "2010": 450479,
-    "abbr": "RR",
-    "stateName": "Roraima",
-    "region": "N"
-  },
-  {
-    "1996": 5510849,
-    "2000": 6195965,
-    "2010": 7581051,
-    "abbr": "PA",
-    "stateName": "Pará",
-    "region": "N"
-  },
-  {
-    "1996": 379459,
-    "2000": 477032,
-    "2010": 669526,
-    "abbr": "AP",
-    "stateName": "Amapá",
-    "region": "N"
-  },
-  {
-    "1996": 1048642,
-    "2000": 1157690,
-    "2010": 1383445,
-    "abbr": "TO",
-    "stateName": "Tocantins",
-    "region": "N"
-  },
-  {
-    "1996": 5222183,
-    "2000": 5657552,
-    "2010": 6574789,
-    "abbr": "MA",
-    "stateName": "Maranhão",
-    "region": "NE"
-  },
-  {
-    "1996": 2673085,
-    "2000": 2843428,
-    "2010": 3118360,
-    "abbr": "PI",
-    "stateName": "Piauí",
-    "region": "NE"
-  },
-  {
-    "1996": 6809290,
-    "2000": 7431597,
-    "2010": 8452381,
-    "abbr": "CE",
-    "stateName": "Ceará",
-    "region": "NE"
-  },
-  {
-    "1996": 2558660,
-    "2000": 2777509,
-    "2010": 3168027,
-    "abbr": "RN",
-    "stateName": "Rio Grande do Norte",
-    "region": "NE"
-  },
-  {
-    "1996": 3305616,
-    "2000": 3444794,
-    "2010": 3766528,
-    "abbr": "PB",
-    "stateName": "Paraíba",
-    "region": "NE"
-  },
-  {
-    "1996": 7399071,
-    "2000": 7929154,
-    "2010": 8796448,
-    "abbr": "PE",
-    "stateName": "Pernambuco",
-    "region": "NE"
-  },
-  {
-    "1996": 2633251,
-    "2000": 2827856,
-    "2010": 3120494,
-    "abbr": "AL",
-    "stateName": "Alagoas",
-    "region": "NE"
-  },
-  {
-    "1996": 1624020,
-    "2000": 1784829,
-    "2010": 2068017,
-    "abbr": "SE",
-    "stateName": "Sergipe",
-    "region": "NE"
-  },
-  {
-    "1996": 12541675,
-    "2000": 13085769,
-    "2010": 14016906,
-    "abbr": "BA",
-    "stateName": "Bahia",
-    "region": "NE"
-  },
-  {
-    "1996": 16672613,
-    "2000": 17905134,
-    "2010": 19597330,
-    "abbr": "MG",
-    "stateName": "Minas Gerais",
-    "region": "SE"
-  },
-  {
-    "1996": 2802707,
-    "2000": 3097498,
-    "2010": 3514952,
-    "abbr": "ES",
-    "stateName": "Espírito Santo",
-    "region": "SE"
-  },
-  {
-    "1996": 13406308,
-    "2000": 14392106,
-    "2010": 15989929,
-    "abbr": "RJ",
-    "stateName": "Rio de Janeiro",
-    "region": "SE"
-  },
-  {
-    "1996": 34119110,
-    "2000": 37035456,
-    "2010": 41262199,
-    "abbr": "SP",
-    "stateName": "São Paulo",
-    "region": "SE"
-  },
-  {
-    "1996": 9003804,
-    "2000": 9564643,
-    "2010": 10444526,
-    "abbr": "PR",
-    "stateName": "Paraná",
-    "region": "S"
-  },
-  {
-    "1996": 4875244,
-    "2000": 5357864,
-    "2010": 6248436,
-    "abbr": "SC",
-    "stateName": "Santa Catarina",
-    "region": "S"
-  },
-  {
-    "1996": 9634688,
-    "2000": 10187842,
-    "2010": 10693929,
-    "abbr": "RS",
-    "stateName": "Rio Grande do Sul",
-    "region": "S"
-  },
-  {
-    "1996": 1927834,
-    "2000": 2078070,
-    "2010": 2449024,
-    "abbr": "MS",
-    "stateName": "Mato Grosso do Sul",
-    "region": "CW"
-  },
-  {
-    "1996": 2235832,
-    "2000": 2505245,
-    "2010": 3035122,
-    "abbr": "MT",
-    "stateName": "Mato Grosso",
-    "region": "CW"
-  },
-  {
-    "1996": 4514967,
-    "2000": 5004197,
-    "2010": 6003788,
-    "abbr": "GO",
-    "stateName": "Goiás",
-    "region": "CW"
-  },
-  {
-    "1996": 1821946,
-    "2000": 2051146,
-    "2010": 2570160,
-    "abbr": "DF",
-    "stateName": "Distrito Federal",
-    "region": "CW"
-  }
-];
+function showMurder(e){
+	e.target.classList.add('hovered');
+	let murder = murders[this.getAttribute('data-ref')];
+	let tooltip = document.createElement('div');
+	tooltip.classList.add('tooltip');
+	e.target.appendChild(tooltip);
+	tooltip.innerHTML = '';
+	//tooltip.innerText = murder['Nome da Vítima'];
+	console.log(murder);
+	let dateMunicipality = murder['Data'] + '<br/>' +murder['Municípios'] + '–' + murder['State(UF)'];
+	let dm = document.createElement('div');
+	dm.innerHTML = dateMunicipality;
+
+	let event = murder['Nome do Conflito'];
+	let name = murder['Nome da Vítima'];
+	let categoty = murder['Categoria'];
+
+	let info = document.createElement('div');
+	info.classList.add('info');
+	info.innerHTML = `
+		${event}<br/>
+		<span>${name}</span><br/>
+		${categoty}
+	`;
+
+
+
+	tooltip.appendChild(dm);
+	tooltip.appendChild(info);
+}
+
+
+function mapRange(value, low1, high1, low2, high2) {
+	return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+
+
+
+

@@ -84,15 +84,15 @@ function doMap(){
 	map.on('load', function () {
 
 		
-		// waterFeatures.features.forEach(function(marker) {
+		waterFeatures.features.forEach(function(marker) {
 
-		// 	var el = document.createElement('div');
-		// 	el.className = 'marker';
+			var el = document.createElement('div');
+			el.className = 'marker';
 
-		// 	new mapboxgl.Marker(el)
-		// 	.setLngLat(marker.geometry.coordinates)
-		// 	.addTo(map);
-		// });
+			new mapboxgl.Marker(el)
+			.setLngLat(marker.geometry.coordinates)
+			.addTo(map);
+		});
 
 	
 
@@ -184,8 +184,7 @@ function showData(stateData, point){
 		numApplicable = occupations;
 	}
 
-	console.log(numApplicable.length);
-
+	
 	if(numApplicable.length > 0){
 		document.querySelector('#info').style.display = 'block';
 		numApplicable.forEach(function(occupation){
