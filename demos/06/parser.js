@@ -67,6 +67,15 @@ rows2.forEach((row, num) => {
 	isBloc = place.toLowerCase().indexOf('bloq') >= 0;
 	if (isBloc) {
 
+		for (let i=0; i<row.length; i++) {
+			let val = row[i];
+			val = val.replace(/\r/g , ' ');
+			val = val.replace(/\n/g , ' ');
+			val = val.replace(/\t/g , ' ');
+			row[i] = val.trim();
+
+		}
+
 		const places = place.split('/');
 		row[3] = places[0];
 		let place2 = (places.length > 1) ? places[1] : '';
@@ -115,16 +124,16 @@ rows3.forEach((row, num) => {
 });
 
 
-// stringify(rows3, { quoted: true }, function(err, output) {
-// 	// console.log(output)
-// 	fs.writeFile('result.csv', output, 'utf8', function(err) {
-// 		if (err) {
-// 			console.log('Some error occured - file either not saved or corrupted file saved.');
-// 		} else {
-// 			console.log('It\'s saved!');
-// 		}
-// 	});
-// });
+stringify(rows3, { quoted: true }, function(err, output) {
+	// console.log(output)
+	fs.writeFile('result.csv', output, 'utf8', function(err) {
+		if (err) {
+			console.log('Some error occured - file either not saved or corrupted file saved.');
+		} else {
+			console.log('It\'s saved!');
+		}
+	});
+});
 
 const json = JSON.stringify(data);
 fs.writeFileSync('data.json', json, 'utf8');
