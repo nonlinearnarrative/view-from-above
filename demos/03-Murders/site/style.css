@@ -22,18 +22,25 @@ body {
 }
 
 #year-menu {
+	
+	flex: 0 1 80px;
+	padding: 20px 10px;
+	font-size: 14px;
+}
+
+#year-menu .inner {
+	background-color: #222;
+
 	display: flex;
 	flex-flow: column nowrap;
-	flex: 0 1 80px;
-	padding: 10px;
-	font-size: 14px;
 	justify-content: space-between;
-	background-color: #222;
+	height: 100%;
 }
 
 #year-menu div {
 	cursor: pointer;
 	text-align: center;
+	padding: 5px 0;
 
 }
 
@@ -63,7 +70,7 @@ h1 {
 .year-container .month-legend {
 	width: 30px;
 	padding-top: 50px;
-
+	color: #777;
 	font-size: 14px;
 	text-transform: uppercase;
 	
