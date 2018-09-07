@@ -26,12 +26,14 @@ body {
 	flex-flow: column nowrap;
 	flex: 0 1 80px;
 	padding: 10px;
+	font-size: 14px;
 	justify-content: space-between;
 	background-color: #222;
 }
 
 #year-menu div {
 	cursor: pointer;
+	text-align: center;
 
 }
 
@@ -62,7 +64,7 @@ h1 {
 	width: 30px;
 	padding-top: 50px;
 
-	font-size: 12px;
+	font-size: 14px;
 	text-transform: uppercase;
 	
 }
@@ -71,24 +73,47 @@ h1 {
 	background-color: red;
 }
 
+
+
 .NE .murder {
-	background-color: rgb(255,0,0);
+	background-color: #FFBC00;
+}
+
+div[data-region='NE'] .header {
+	color: #FFBC00;
 }
 
 .N .murder {
-	background-color: tan;
+	background-color: #63823B;
+}
+
+div[data-region='N'] .header {
+	color: #63823B;
 }
 
 .CW .murder {
-	background-color: green;
+	background-color: #7F7A75;
+}
+
+div[data-region='CW'] .header {
+	color: #7F7A75;
 }
 
 .S .murder {
-	background-color: orange;
+	background-color: #997510;
+}
+
+div[data-region='S'] .header {
+	color: #997510;
 }
 
 .SE .murder {
-	background-color: blue;
+	background-color: #34489B;
+}
+
+
+div[data-region='SE'] .header {
+	color: #34489B;
 }
 
 .month-legend div {
@@ -106,7 +131,7 @@ h1 {
 
 .year-container .state-columns > div {
 	flex: 0 1 30px;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid #555;
 
 }
 
@@ -132,6 +157,11 @@ path.active, polygon.active {
 	width: 300px;
 }
 
+svg path, svg polygon {
+	stroke: #FFF !important;
+	stroke-width: 2px !important;
+}
+
 .state-column {
 /*	display: flex;
 	flex-flow: column nowrap;*/
@@ -140,12 +170,20 @@ path.active, polygon.active {
 
 .state-column.off {
 	opacity: 0.1;
+
+}
+
+.month div:nth-last-child(1){
+	border-right: none;
 }
 
 .event-container {
 	display: flex;
-
+	border-right: 1px solid #383838;
+	border-bottom: 1px solid #383838;
 }
+
+
 .month {
 	min-height: 30px;
 	display: flex;
@@ -153,15 +191,17 @@ path.active, polygon.active {
 
 .header {
 	position: absolute;
-	font-size: 12px;
-	transform: rotate(-45deg);
-	font-weight: bold;
-	transform-origin: 0 0;
-	min-width: 150px;
-	top: -15px;
+	height: 20px;
+	top: -20px;
+	right: 0;
+	left: 0;
+	text-align: center;
+	font-size: 14px;	
+
 }
 
 .murder {
+
 	flex: 0 0 30px;
 	width: 30px;
 	height: 30px;

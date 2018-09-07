@@ -25,7 +25,7 @@
 			data.forEach(function(feature){
 				console.log(feature.lat);
 				geofeature.properties = feature;
-				geofeature.geometry.coordinates = [feature.lng, feature.lat];
+				geofeature.geometry.coordinates = [feature.lat, feature.lng];
 				features.push(geofeature);
 
 			});
