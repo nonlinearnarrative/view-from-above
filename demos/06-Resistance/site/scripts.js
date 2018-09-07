@@ -47,8 +47,6 @@ function createStates() {
 		item.insertAdjacentHTML( 'beforeend', `
 			<div>
 				<div><a href="${state}" data-state="${state}">${state}</a></div>
-				<div>Blockades: ${numBlockades}</div>
-				<div>Claims: ${claimGroups}</div>
 			</div>
 		`);
 
@@ -83,8 +81,6 @@ function createMunicipalities() {
 		item.insertAdjacentHTML( 'beforeend', `
 			<div>
 				<div><a href="${municipality}" data-municipality="${municipality}">${municipality}</a></div>
-				<div>Blockades: ${numBlockades}</div>
-				<div>Claims: ${claimGroups}</div>
 			</div>
 		`);
 
@@ -120,7 +116,6 @@ function createClaimGroups() {
 			<div>
 				<div><a href="${group}" data-group="${group}">${group}</a></div>
 				<div>Blockades: ${numBlockades}</div>
-				<div>Claims: ${claimGroups}</div>
 			</div>
 		`);
 

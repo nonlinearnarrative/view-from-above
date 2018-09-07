@@ -3,5 +3,10 @@ body {
 }
 
 .hidden {
-	display: none;
+	/* display: none; */
+}
+
+.list {
+	display: inline-block;
+	border: solid 1px #000;
 }
