@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<main>
+	<main id="selection">
 		<section id="states" class="list">
 			<h1>Select state</h1>
 			<ul></ul>
@@ -21,6 +21,54 @@
 			<h1>Select type of claim</h1>
 			<ul></ul>
 		</section>
+
+		<section id="participants" class="list">
+			<h1>Participation</h1>
+			<form>
+				<div>
+					<label for="num-participants">Number of participants</label>
+					<input type="text" id="num-participants" />
+				</div>
+
+				<div>
+					<label for="num-months">Number of months</label>
+					<input type="text" id="num-months" />
+				</div>
+
+				<button id="submit">Submit</button>
+
+			</form>
+		</section>
+	</main>
+
+	<main id="results">
+		<a href="/" id="back">Back</a>
+		<h1>Results</h1>
+
+		<div>
+			State: <span id="result-state"></span>
+		</div>
+
+		<div>
+			Industries: <span id="result-industries"></span>
+		</div>
+
+		<div>
+			Municipality: <span id="result-municipality"></span>
+		</div>
+
+		<div>
+			Type of claim: <span id="result-group"></span>
+		</div>
+
+		<div>
+			Participants: <span id="result-participants"></span>
+		</div>
+
+		<div>
+			Months: <span id="result-months"></span>
+		</div>
+
 	</main>
 
 	<script src="scripts.js"></script>

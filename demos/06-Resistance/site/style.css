@@ -3,10 +3,16 @@ body {
 }
 
 .hidden {
-	/* display: none; */
+	display: none;
 }
 
 .list {
-	display: inline-block;
-	border: solid 1px #000;
+}
+
+main#selection {
+	display: flex;
+}
+
+main#selection.hidden {
+	display: none;
 }

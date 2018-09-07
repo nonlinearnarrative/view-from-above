@@ -2,9 +2,12 @@ let _data = false;
 let _state = false;
 let _municipality = false;
 let _group = false;
+let _numParticipants;
+let _numMonths;
 
 updateScreen();
 fetchData();
+createForm();
 
 function fetchData() {
 	fetch(`${window.location.protocol}//${window.location.hostname}:${window.location.port}/blockades.json`, {
@@ -20,16 +23,61 @@ function fetchData() {
 	});
 }
 
+
+function createForm() {
+
+	document.querySelector('a#back').addEventListener('click', (e) => {
+		e.preventDefault();
+		updateScreen('state');
+	});
+
+	document.querySelector('form').addEventListener('submit', (e) => {
+		e.preventDefault();
+		const numParticipants = parseInt(document.querySelector('#num-participants').value);
+		const numMonths = parseInt(document.querySelector('#num-months').value);
+		_numParticipants = numParticipants;
+		_numMonths = numMonths;
+		updateScreen('results');
+	})
+}
+
 function updateScreen(screen) {
 	document.querySelectorAll('main section').forEach((section) => {
 		section.classList.add('hidden');
 	});
+
+	document.querySelector('main#selection').classList.add('hidden');
+	document.querySelector('main#results').classList.add('hidden');
+
 	if (screen === 'state') {
+		document.querySelector('main#selection').classList.remove('hidden');
 		document.querySelector('#states').classList.remove('hidden');
+		document.querySelector('form').reset();
 	} else if (screen === 'municipality') {
+		document.querySelector('main#selection').classList.remove('hidden');
+		document.querySelector('#states').classList.remove('hidden');
 		document.querySelector('#municipalities').classList.remove('hidden');
 	} else if (screen === 'group') {
+		document.querySelector('main#selection').classList.remove('hidden');
+		document.querySelector('#states').classList.remove('hidden');
+		document.querySelector('#municipalities').classList.remove('hidden');
 		document.querySelector('#groups').classList.remove('hidden');
+	} else if (screen === 'participants') {
+		document.querySelector('main#selection').classList.remove('hidden');
+		document.querySelector('#states').classList.remove('hidden');
+		document.querySelector('#municipalities').classList.remove('hidden');
+		document.querySelector('#groups').classList.remove('hidden');
+		document.querySelector('#participants').classList.remove('hidden');
+	} else if (screen === 'results') {
+		document.querySelector('main#results').classList.remove('hidden');
+
+
+		document.querySelector('#result-state').textContent = _state;
+		document.querySelector('#result-industries').textContent = _data[_state].industries.join(', ');
+		document.querySelector('#result-municipality').textContent = _municipality;
+		document.querySelector('#result-group').textContent = _group;
+		document.querySelector('#result-participants').textContent = _numParticipants;
+		document.querySelector('#result-months	').textContent = _numMonths;
 	}
 }
 
@@ -129,9 +177,11 @@ function createClaimGroups() {
 			_group = group;
 			console.log(group);
 
+			updateScreen('participants');
 			// createClaimGroups();
 
 		});
 	});	
 	updateScreen('group');
 }
+
