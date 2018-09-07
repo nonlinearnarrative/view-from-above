@@ -2,7 +2,7 @@ const fs = require('fs');
 const parse = require('csv-parse/lib/sync')
 const stringify = require('csv-stringify');
 
-const fileContents = fs.readFileSync('data_translations.csv', 'utf8');
+const fileContents = fs.readFileSync('blockades.csv', 'utf8');
 const csvRows = parse(fileContents);
 
 const data = {};
@@ -23,8 +23,9 @@ csvRows.forEach((row, num) => {
 			type_of_work: row[7],
 			type_of_claim: row[8],
 			type_of_claim_en: row[9],
-			type_of_violence: row[10],
-			type_of_violence_en: row[11],
+			type_of_claim_group: row[10],
+			type_of_violence: row[11],
+			type_of_violence_en: row[12],
 		};
 
 		
