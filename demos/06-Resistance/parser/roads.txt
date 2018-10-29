@@ -595,7 +595,7 @@ Avenida Santos
 Dumont
 MS-379
 BR-247
-M u n  ic  ip a  l
+Municipal
 BR-381
 EFVM
 ao Projeto S11D
@@ -621,7 +621,7 @@ Av. Nuno de Assis
 Rod. Rodovia Ceário
 José de Castilho
 Rodov. Cesário José de
-C a s t  i lh o
+Castilho
 Av. Plínio de
 Queiroz
 Rodovia Anhanguera
